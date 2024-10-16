@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/controllers/auth_controller.dart';
-import 'package:url_launcher/url_launcher.dart'; // Import url_launcher
 
 class GetOtpScreen extends StatefulWidget {
   @override
