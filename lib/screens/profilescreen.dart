@@ -171,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -198,17 +198,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.buttoncolor),
-                        onPressed: () {
-                          // Handle message
-                        },
-                        child: Text(
-                          'Message',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //       backgroundColor: AppColors.buttoncolor),
+                      //   onPressed: () {
+                      //     // Handle message
+                      //   },
+                      //   child: Text(
+                      //     'Message',
+                      //     style: TextStyle(color: Colors.white),
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -237,9 +237,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         width: 70,
                                         height: 70,
                                         decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.black),
                                           shape: BoxShape.circle,
-                                          color: Colors.grey
-                                              .shade300, // Placeholder color
+                                          color: Colors
+                                              .transparent, // Placeholder color
                                         ),
                                         child: Icon(
                                           Icons
@@ -382,24 +384,17 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Widget _buildGridContent() {
-    // Calculate the number of columns based on screen width
-    int crossAxisCount = (MediaQuery.of(context).size.width / 120)
-        .floor(); // 120 can be adjusted for spacing
-
-    return GridView.count(
-      crossAxisCount: crossAxisCount,
-      children: List.generate(9, (index) {
-        return Container(
-          margin: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image:
-                  AssetImage(AppAssets.profilepic), // Replace with post images
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      }),
+    return GridView.builder(
+      padding: const EdgeInsets.all(8.0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+      ),
+      itemBuilder: (context, index) {
+        return Container(child: Image.asset(AppAssets.profilepic));
+      },
+      itemCount: 30,
     );
   }
 

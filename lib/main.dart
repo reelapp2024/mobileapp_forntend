@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Montserrat',
         primarySwatch: Colors.red,
       ),
-      initialRoute: AppRoutes.profilescreen, // Use the route from AppRoutes
-      getPages: AppRoutes.routes, // Use the routes defined in AppRoutes
+      initialRoute: AppRoutes.profilescreen,
+      getPages: AppRoutes.routes,
     );
   }
 }
