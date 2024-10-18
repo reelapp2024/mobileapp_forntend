@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logical_dottech/constant/color_const.dart';
+import 'package:get/get.dart';
 
 class BusinessTypeScreen extends StatefulWidget {
   @override
@@ -150,6 +151,7 @@ class _BusinessTypeScreenState extends State<BusinessTypeScreen> {
             child: FloatingActionButton(
               onPressed: _selectedBusinessTypes.isNotEmpty
                   ? () {
+                      Get.toNamed('/profilescreen');
                       // Action when pressed, e.g., navigate to the next screen
                       print("Selected Business Types: $_selectedBusinessTypes");
                     }
