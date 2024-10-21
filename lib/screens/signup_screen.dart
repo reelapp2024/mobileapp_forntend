@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
+  @override
+  _SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  // You can use TextEditingControllers if you want to get the form values
+  final TextEditingController _businessNameController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _subCategoryController = TextEditingController();
+  final TextEditingController _buildingNameController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _landmarkController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _pinCodeController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
+          // Background Gradient
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -15,9 +33,10 @@ class SignupScreen extends StatelessWidget {
               ),
             ),
           ),
+          // Title "Sign Up"
           Positioned(
-            top: 60, // Adjust the position as needed
-            left: 16, // Left padding
+            top: 60,
+            left: 16,
             child: Text(
               'Sign Up',
               style: TextStyle(
@@ -52,42 +71,51 @@ class SignupScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     // Form fields
-                    _buildTextField('Business Name', Icons.store),
+                    _buildTextField(
+                        'Business Name', Icons.store, _businessNameController),
                     SizedBox(height: 10),
-                    _buildTextField('Categories', Icons.category),
+                    _buildTextField(
+                        'Categories', Icons.category, _categoryController),
                     SizedBox(height: 10),
-                    _buildTextField('Sub-Categories', Icons.subtitles),
+                    _buildTextField('Sub-Categories', Icons.subtitles,
+                        _subCategoryController),
                     SizedBox(height: 10),
-                    _buildTextField('Building Name', Icons.apartment),
+                    _buildTextField('Building Name', Icons.apartment,
+                        _buildingNameController),
                     SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
-                            child:
-                                _buildTextField('Street', Icons.location_on)),
+                            child: _buildTextField('Street', Icons.location_on,
+                                _streetController)),
                         SizedBox(width: 10),
                         Expanded(
-                            child: _buildTextField('Landmark', Icons.flag)),
+                            child: _buildTextField(
+                                'Landmark', Icons.flag, _landmarkController)),
                       ],
                     ),
                     SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
-                            child:
-                                _buildTextField('City', Icons.location_city)),
+                            child: _buildTextField(
+                                'City', Icons.location_city, _cityController)),
                         SizedBox(width: 10),
-                        Expanded(child: _buildTextField('State', Icons.map)),
+                        Expanded(
+                            child: _buildTextField(
+                                'State', Icons.map, _stateController)),
                       ],
                     ),
                     SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
-                            child: _buildTextField('Pin Code', Icons.pin_drop)),
+                            child: _buildTextField('Pin Code', Icons.pin_drop,
+                                _pinCodeController)),
                         SizedBox(width: 10),
                         Expanded(
-                            child: _buildTextField('Country', Icons.public)),
+                            child: _buildTextField(
+                                'Country', Icons.public, _countryController)),
                       ],
                     ),
                     SizedBox(height: 20),
@@ -116,7 +144,9 @@ class SignupScreen extends StatelessWidget {
             right: 30,
             child: FloatingActionButton(
               onPressed: () {
-                // Action when pressed
+                // Perform submission action here
+                // You can access the form field values using the controllers
+                print('Business Name: ${_businessNameController.text}');
               },
               backgroundColor: Color(0xFFFF2222),
               child: Icon(
@@ -130,8 +160,11 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String labelText, IconData icon) {
+  // A reusable method for building TextFields
+  Widget _buildTextField(
+      String labelText, IconData icon, TextEditingController controller) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: Icon(icon, color: Colors.grey),

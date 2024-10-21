@@ -173,23 +173,37 @@ class _ProfileScreenState extends State<ProfileScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Handle edit profile
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red),
-                        child: Text('Edit Profile',
-                            style: TextStyle(color: Colors.white)),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 40,
+                          width: 150,
+                          decoration: BoxDecoration(
+                              color: AppColors.primary1Color,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Center(
+                            child: Text(
+                              "Edit Profile",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.buttoncolor),
-                        onPressed: () {
-                          // Handle share profile
-                        },
-                        child: Text('Share Profile',
-                            style: TextStyle(color: Colors.white)),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 40,
+                          width: 150,
+                          decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Center(
+                            child: Text(
+                              "Share",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
