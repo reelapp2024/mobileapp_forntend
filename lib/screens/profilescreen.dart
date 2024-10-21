@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/constant/image_const.dart';
+import 'package:logical_dottech/screens/chat_screen.dart';
+import 'package:logical_dottech/screens/playlist_detail_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -63,7 +65,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ),
                   ),
                 ),
-
                 // Camera icon at the bottom right of the profile photo, on the border
                 Positioned(
                   top:
@@ -88,10 +89,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ],
             ),
-
             SizedBox(height: 45),
             // Rest of the profile info and tabs below
-            // Your other code goes here
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
@@ -142,10 +141,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ],
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
-
                   Row(
                     children: [
                       Text(
@@ -180,12 +178,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                           // Handle edit profile
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                        child: Text(
-                          'Edit Profile',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                            backgroundColor: Colors.red),
+                        child: Text('Edit Profile',
+                            style: TextStyle(color: Colors.white)),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -193,29 +188,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                         onPressed: () {
                           // Handle share profile
                         },
-                        child: Text(
-                          'Share Profile',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: Text('Share Profile',
+                            style: TextStyle(color: Colors.white)),
                       ),
-                      // ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //       backgroundColor: AppColors.buttoncolor),
-                      //   onPressed: () {
-                      //     // Handle message
-                      //   },
-                      //   child: Text(
-                      //     'Message',
-                      //     style: TextStyle(color: Colors.white),
-                      //   ),
-                      // ),
                     ],
                   ),
                   SizedBox(height: 10),
-                  // STORY HIGHLIGHTS SECTION
                   Column(
                     children: [
-                      // Story highlights container (Instagram-style)
                       Container(
                         height: 100, // Height of the highlight section
                         child: ListView.builder(
@@ -223,7 +203,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                           itemCount: 10 + 1, // Extra 1 for "Add Story" button
                           itemBuilder: (context, index) {
                             if (index == 0) {
-                              // Add Story button
                               return Padding(
                                 padding: const EdgeInsets.only(right: 16.0),
                                 child: Column(
@@ -231,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     GestureDetector(
                                       onTap: () {
                                         // Handle Add Story tap
-                                        _addStory(); // Call the function to add a story
+                                        _addStory();
                                       },
                                       child: Container(
                                         width: 70,
@@ -252,30 +231,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ),
                                     ),
                                     SizedBox(height: 6),
-                                    Text(
-                                      'Add Story',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
+                                    Text('Add Story',
+                                        style: TextStyle(fontSize: 12)),
                                   ],
                                 ),
                               );
                             } else {
-                              // Existing stories (index starts from 1 because index 0 is for "Add Story")
                               return Padding(
                                 padding: const EdgeInsets.only(right: 16.0),
                                 child: Column(
                                   children: [
-                                    // Story highlight cover
                                     Container(
-                                      width:
-                                          70, // Width and height for each highlight
+                                      width: 70,
                                       height: 70,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: Colors.grey.shade300,
-                                          width: 2,
-                                        ),
+                                            color: Colors.grey.shade300,
+                                            width: 2),
                                         image: DecorationImage(
                                           image: NetworkImage(
                                               'https://example.com/story-${index}.jpg'), // Replace with story highlight image
@@ -284,11 +257,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ),
                                     ),
                                     SizedBox(height: 6),
-                                    // Story highlight label
-                                    Text(
-                                      'Story $index',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
+                                    Text('Story $index',
+                                        style: TextStyle(fontSize: 12)),
                                   ],
                                 ),
                               );
@@ -317,16 +287,14 @@ class _ProfileScreenState extends State<ProfileScreen>
             ),
             SizedBox(
               height: 300, // Fixed height for TabBarView
-              child: Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildGridContent(), // All Posts tab content
-                    _buildGridContent(), // Reels tab content
-                    _buildGridContent(), // Playlist tab content
-                    _buildGridContent(), // Products tab content
-                  ],
-                ),
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildGridContent(), // All Posts tab content
+                  _buildGridContent(), // Reels tab content
+                  _buildPlaylistContent(), // Playlist tab content
+                  _buildGridContent(), // Products tab content
+                ],
               ),
             ),
           ],
@@ -340,26 +308,29 @@ class _ProfileScreenState extends State<ProfileScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              color: Colors.white,
-              icon: Icon(Icons.person),
-              onPressed: () {},
-            ),
+                color: Colors.white,
+                icon: Icon(Icons.person),
+                onPressed: () {}),
             IconButton(
-              color: Colors.white,
-              icon: Icon(Icons.message),
-              onPressed: () {},
-            ),
+                color: Colors.white,
+                icon: Icon(Icons.message),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ChatScreen()), // Navigates to the ChatScreen
+                  );
+                }),
             SizedBox(width: 40), // Center the FAB
             IconButton(
-              color: Colors.white,
-              icon: Icon(Icons.notifications),
-              onPressed: () {},
-            ),
+                color: Colors.white,
+                icon: Icon(Icons.notifications),
+                onPressed: () {}),
             IconButton(
-              color: Colors.white,
-              icon: Icon(Icons.settings),
-              onPressed: () {},
-            ),
+                color: Colors.white,
+                icon: Icon(Icons.settings),
+                onPressed: () {}),
           ],
         ),
       ),
@@ -374,10 +345,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             width: 2.0, // Border width
           ),
         ),
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+        child: Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -398,12 +366,104 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
+  Widget _buildPlaylistContent() {
+    return ListView.builder(
+      padding: EdgeInsets.all(16.0),
+      itemCount: 5, // Number of playlists
+      itemBuilder: (context, index) {
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          margin: EdgeInsets.only(bottom: 16.0),
+          elevation: 4.0,
+          child: InkWell(
+            onTap: () {
+              // Navigate to the playlist details screen where users can view/edit reels
+              _navigateToPlaylistDetail(index);
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Playlist Cover Image
+                Container(
+                  height: 150,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
+                    image: DecorationImage(
+                      image: AssetImage(
+                          AppAssets.profilepic), // Playlist cover image
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      // Add overlay for the number of videos in the playlist
+                      Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '16 Videos', // Example: number of videos in the playlist
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Playlist Title
+                      Text(
+                        'WhatsApp Marketing and Automations Course',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      // Playlist Description
+                      Text(
+                        'View full playlist',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _navigateToPlaylistDetail(int index) {
+    // Navigate to a screen where users can add/view multiple reels in the playlist
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PlaylistDetailScreen(playlistIndex: index),
+      ),
+    );
+  }
+
   void _addStory() {
-    // Logic to handle adding a new story
-    // For example, you could open a camera or file picker here
     setState(() {
-      // After adding the story, increase the number of stories
-      // This is a placeholder. You'd handle the story data more robustly.
       storyCount += 1;
     });
   }
