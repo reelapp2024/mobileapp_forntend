@@ -151,7 +151,7 @@ class _BusinessTypeScreenState extends State<BusinessTypeScreen> {
             child: FloatingActionButton(
               onPressed: _selectedBusinessTypes.isNotEmpty
                   ? () {
-                      Get.toNamed('/profilescreen');
+                      Get.toNamed('/mainscreen');
                       // Action when pressed, e.g., navigate to the next screen
                       print("Selected Business Types: $_selectedBusinessTypes");
                     }

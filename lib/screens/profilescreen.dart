@@ -314,54 +314,54 @@ class _ProfileScreenState extends State<ProfileScreen>
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: AppColors.buttoncolor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 6,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-                color: Colors.white,
-                icon: Icon(Icons.person),
-                onPressed: () {}),
-            IconButton(
-                color: Colors.white,
-                icon: Icon(Icons.message),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ChatScreen()), // Navigates to the ChatScreen
-                  );
-                }),
-            SizedBox(width: 40), // Center the FAB
-            IconButton(
-                color: Colors.white,
-                icon: Icon(Icons.notifications),
-                onPressed: () {}),
-            IconButton(
-                color: Colors.white,
-                icon: Icon(Icons.settings),
-                onPressed: () {}),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.buttoncolor,
-        onPressed: () {
-          // Handle FAB action
-        },
-        shape: CircleBorder(
-          side: BorderSide(
-            color: Colors.white, // Border color
-            width: 2.0, // Border width
-          ),
-        ),
-        child: Icon(Icons.add, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: BottomAppBar(
+      //   color: AppColors.buttoncolor,
+      //   shape: CircularNotchedRectangle(),
+      //   notchMargin: 6,
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      //       IconButton(
+      //           color: Colors.white,
+      //           icon: Icon(Icons.person),
+      //           onPressed: () {}),
+      //       IconButton(
+      //           color: Colors.white,
+      //           icon: Icon(Icons.message),
+      //           onPressed: () {
+      //             Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (context) =>
+      //                       ChatScreen()), // Navigates to the ChatScreen
+      //             );
+      //           }),
+      //       SizedBox(width: 40), // Center the FAB
+      //       IconButton(
+      //           color: Colors.white,
+      //           icon: Icon(Icons.notifications),
+      //           onPressed: () {}),
+      //       IconButton(
+      //           color: Colors.white,
+      //           icon: Icon(Icons.settings),
+      //           onPressed: () {}),
+      //     ],
+      //   ),
+      // ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: AppColors.buttoncolor,
+      //   onPressed: () {
+      //     // Handle FAB action
+      //   },
+      //   shape: CircleBorder(
+      //     side: BorderSide(
+      //       color: Colors.white, // Border color
+      //       width: 2.0, // Border width
+      //     ),
+      //   ),
+      //   child: Icon(Icons.add, color: Colors.white),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
