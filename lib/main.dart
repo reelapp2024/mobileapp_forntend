@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Montserrat',
         primarySwatch: Colors.red,
       ),
-      initialRoute: AppRoutes.mainscreen,
+      initialRoute: AppRoutes.splashscreen,
       getPages: AppRoutes.routes,
     );
   }

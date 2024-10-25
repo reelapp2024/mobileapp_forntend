@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:logical_dottech/app_route.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/constant/image_const.dart';
 import 'package:logical_dottech/screens/chat_screen.dart';
@@ -305,67 +308,161 @@ class _ProfileScreenState extends State<ProfileScreen>
                 controller: _tabController,
                 children: [
                   _buildGridContent(), // All Posts tab content
-                  _buildGridContent(), // Reels tab content
+                  _buildReelsContent(context), // Reels tab content
                   _buildPlaylistContent(), // Playlist tab content
-                  _buildGridContent(), // Products tab content
+                  _buildProductsContent(), // Products tab content
                 ],
               ),
             ),
           ],
         ),
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   color: AppColors.buttoncolor,
-      //   shape: CircularNotchedRectangle(),
-      //   notchMargin: 6,
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //     children: [
-      //       IconButton(
-      //           color: Colors.white,
-      //           icon: Icon(Icons.person),
-      //           onPressed: () {}),
-      //       IconButton(
-      //           color: Colors.white,
-      //           icon: Icon(Icons.message),
-      //           onPressed: () {
-      //             Navigator.push(
-      //               context,
-      //               MaterialPageRoute(
-      //                   builder: (context) =>
-      //                       ChatScreen()), // Navigates to the ChatScreen
-      //             );
-      //           }),
-      //       SizedBox(width: 40), // Center the FAB
-      //       IconButton(
-      //           color: Colors.white,
-      //           icon: Icon(Icons.notifications),
-      //           onPressed: () {}),
-      //       IconButton(
-      //           color: Colors.white,
-      //           icon: Icon(Icons.settings),
-      //           onPressed: () {}),
-      //     ],
-      //   ),
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: AppColors.buttoncolor,
-      //   onPressed: () {
-      //     // Handle FAB action
-      //   },
-      //   shape: CircleBorder(
-      //     side: BorderSide(
-      //       color: Colors.white, // Border color
-      //       width: 2.0, // Border width
-      //     ),
-      //   ),
-      //   child: Icon(Icons.add, color: Colors.white),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
+  // Build content for Products tab
+  Widget _buildProductsContent() {
+    List<Map<String, String>> productsData = [
+      {
+        'productUrl': 'https://www.example.com/product1.jpg',
+        'productName': 'Product 1',
+      },
+      {
+        'productUrl': 'https://www.example.com/product2.jpg',
+        'productName': 'Product 2',
+      },
+      {
+        'productUrl': 'https://www.example.com/product3.jpg',
+        'productName': 'Product 3',
+      },
+      // Add more products as needed
+    ];
+
+    return GridView.builder(
+      padding: const EdgeInsets.all(8.0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Adjust number of columns as needed
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+      ),
+      itemCount: productsData.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          // onTap: () {
+          //   // Handle product tap, e.g., navigate to a product detail page
+          //   Get.toNamed(AppRoutes.productDetailScreen, arguments: {
+          //     'productUrl': productsData[index]['productUrl']!,
+          //   });
+          // },
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(productsData[index]['productUrl']!),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                color: Colors.black54,
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  productsData[index]['productName']!,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Build content for All Posts tab
   Widget _buildGridContent() {
+    List<Map<String, String>> postData = [
+      {
+        'imageUrl': 'assets/Mobile-login 1.png', // Use local asset paths
+        'caption': 'Check out this beautiful sunset!',
+      },
+      {
+        'imageUrl': 'assets/Mobile-login 1.png',
+        'caption': 'Had a great time at the beach!',
+      },
+      {
+        'imageUrl': 'assets/Mobile-login 1.png',
+        'caption': 'Delicious food at my favorite restaurant.',
+      },
+      {
+        'imageUrl': 'assets/Mobile-login 1.png',
+        'caption': 'Exploring the mountains.',
+      },
+      {
+        'imageUrl': 'assets/Mobile-login 1.png',
+        'caption': 'Loved this outfit I wore today!',
+      },
+      // Add more posts as needed
+    ];
+
+    return GridView.builder(
+      padding: const EdgeInsets.all(8.0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3, // Number of columns in grid
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+      ),
+      itemCount: postData.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          // Uncomment this if you want to navigate on tap
+          // onTap: () {
+          //   Get.toNamed(AppRoutes.postDetailScreen, arguments: {
+          //     'imageUrl': postData[index]['imageUrl']!,
+          //     'caption': postData[index]['caption']!,
+          //   });
+          // },
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(postData[index]
+                    ['imageUrl']!), // Use AssetImage for local assets
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildReelsContent(BuildContext context) {
+    List<Map<String, dynamic>> videoData = [
+      {
+        'videoUrl': 'assets/videoplayback.mp4',
+        'thumbnailUrl': 'assets/3dLuM0uZ9sA-MQ.jpg',
+        'views': '2000',
+        'likes': '200',
+        'comments': '50',
+        'caption': 'This is reel 1 caption',
+      },
+      {
+        'videoUrl': 'assets/videoplayback.mp4',
+        'thumbnailUrl': 'assets/3dLuM0uZ9sA-MQ.jpg',
+        'views': '999',
+        'likes': '350',
+        'comments': '75',
+        'caption': 'This is reel 2 caption',
+      },
+      {
+        'videoUrl': 'assets/videoplayback.mp4',
+        'thumbnailUrl': 'assets/3dLuM0uZ9sA-MQ.jpg',
+        'views': '897',
+        'likes': '500',
+        'comments': '120',
+        'caption': 'This is reel 3 caption',
+      },
+    ];
+
     return GridView.builder(
       padding: const EdgeInsets.all(8.0),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -373,10 +470,58 @@ class _ProfileScreenState extends State<ProfileScreen>
         mainAxisSpacing: 8.0,
         crossAxisSpacing: 8.0,
       ),
+      itemCount: videoData.length,
       itemBuilder: (context, index) {
-        return Container(child: Image.asset(AppAssets.profilepic));
+        return GestureDetector(
+          onTap: () async {
+            // Navigate to ReelScrollingScreen and pass the video URL and additional data
+            final updatedViews =
+                await Get.toNamed(AppRoutes.reelscreen, arguments: {
+              'videoUrl': videoData[index]['videoUrl']!,
+              'views': videoData[index]['views']!,
+              'caption': videoData[index]['caption']!,
+              'likes': videoData[index]['likes']!,
+              'comments': videoData[index]['comments']!,
+            });
+
+            // Update the views count if returned
+            if (updatedViews != null) {
+              setState(() {
+                videoData[index]['views'] = updatedViews;
+              });
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(videoData[index]['thumbnailUrl']!),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      videoData[index]['views']!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        backgroundColor: Colors.black54,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
       },
-      itemCount: 30,
     );
   }
 

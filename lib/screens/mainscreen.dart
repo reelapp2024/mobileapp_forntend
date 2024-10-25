@@ -11,7 +11,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 1; // Default to BusinessTypeScreen or whichever you want
+  int _currentIndex = 0; // Default to BusinessTypeScreen or whichever you want
 
   // List of pages corresponding to the bottom navigation bar items
   final List<Widget> _pages = [
@@ -37,6 +37,7 @@ class _MainScreenState extends State<MainScreen> {
         onTabSelected: _onTabSelected, // Handle tab selection
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "main_screen_fab", // Unique heroTag to avoid conflicts
         backgroundColor: AppColors.buttoncolor,
         onPressed: () {
           // Handle FAB action

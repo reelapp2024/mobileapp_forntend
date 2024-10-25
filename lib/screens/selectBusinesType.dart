@@ -149,13 +149,13 @@ class _BusinessTypeScreenState extends State<BusinessTypeScreen> {
             bottom: 30,
             right: 30,
             child: FloatingActionButton(
+              heroTag: "business_type_fab", // Unique hero tag
               onPressed: _selectedBusinessTypes.isNotEmpty
                   ? () {
-                      Get.toNamed('/mainscreen');
-                      // Action when pressed, e.g., navigate to the next screen
+                      Get.toNamed('/createprofile');
                       print("Selected Business Types: $_selectedBusinessTypes");
                     }
-                  : null, // Disable if no selection
+                  : null,
               backgroundColor: _selectedBusinessTypes.isNotEmpty
                   ? AppColors.primary1Color
                   : Colors.grey, // Color when enabled, grey when disabled
