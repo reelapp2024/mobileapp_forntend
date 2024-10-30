@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       Get.toNamed(
-                                          '/getOtp'); // Use named route to navigate
+                                          '/signup'); // Use named route to navigate
                                     },
                                 ),
                               ],

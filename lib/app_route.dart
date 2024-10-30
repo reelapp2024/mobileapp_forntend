@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:logical_dottech/screens/content_create.dart';
 import 'package:logical_dottech/screens/create_profile.dart';
 import 'package:logical_dottech/screens/get_otp_screen.dart';
 import 'package:logical_dottech/screens/login_screen.dart';
@@ -19,6 +20,7 @@ class AppRoutes {
   static const String mainscreen = '/mainscreen';
   static const String reelscreen = '/reelscreen';
   static const String createprofile = '/createprofile';
+  static const String contentCreateScreen = '/contentCreateScreen';
 
   static final routes = [
     GetPage(name: signup, page: () => SignupScreen()),
@@ -28,6 +30,7 @@ class AppRoutes {
     GetPage(name: selectBustype, page: () => BusinessTypeScreen()),
     GetPage(name: mainscreen, page: () => MainScreen()),
     GetPage(name: profilescreen, page: () => ProfileScreen()),
+    GetPage(name: contentCreateScreen, page: () => ContentCreateScreen()),
     GetPage(
       name: reelscreen,
       page: () {
