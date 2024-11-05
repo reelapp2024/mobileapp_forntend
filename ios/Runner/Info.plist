@@ -46,10 +46,18 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
-    <!-- Location permissions -->
+	<!-- Location permissions -->
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to your location to provide navigation features.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to your location to provide navigation features even when the app is in the background.</string>
+
+	<!-- Camera and Photo Library permissions -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera to allow you to capture photos and videos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to your photo library to allow you to select photos and videos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app requires permission to save edited media back to your photo library.</string>
 </dict>
 </plist>
