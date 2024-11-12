@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/constant/image_const.dart';
 
@@ -51,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   text: 'Welcome to\n',
                                   style: TextStyle(
                                     color: Colors.black,
+                                    fontFamily: 'Montserrat',
                                     fontSize: 34,
                                   ),
                                 ),
@@ -58,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   text: 'LOCAL SHOP',
                                   style: TextStyle(
                                     color: AppColors.primary1Color,
+                                    fontFamily: 'Montserrat',
                                     fontSize: 34,
                                     fontWeight: FontWeight.bold,
                                   ),
