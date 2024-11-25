@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/screens/profilescreen.dart';
 import 'package:logical_dottech/widgets/bottomnavigationbar.dart';

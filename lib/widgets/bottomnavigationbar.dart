@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logical_dottech/constant/color_const.dart';
-import 'package:logical_dottech/screens/chat_screen.dart'; // If you're using GetX for navigation
+// If you're using GetX for navigation
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -15,8 +15,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       color: AppColors.buttoncolor,
-      shape: CircularNotchedRectangle(),
-      notchMargin: 6,
+      // shape: CircularNotchedRectangle(),
+
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

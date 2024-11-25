@@ -5,6 +5,7 @@ import 'package:logical_dottech/screens/create_profile.dart';
 import 'package:logical_dottech/screens/get_otp_screen.dart';
 import 'package:logical_dottech/screens/login_screen.dart';
 import 'package:logical_dottech/screens/mainscreen.dart';
+import 'package:logical_dottech/screens/product_screen.dart';
 import 'package:logical_dottech/screens/profilescreen.dart';
 import 'package:logical_dottech/screens/reel_screen.dart';
 import 'package:logical_dottech/screens/selectBusinesType.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String createprofile = '/createprofile';
   static const String contentCreateScreen = '/contentCreateScreen';
   static const String businessLocationScreen = '/businessLocationScreen';
+  static const String productscreen = '/productscreen';
 
   static final routes = [
     GetPage(name: signup, page: () => SignupScreen()),
@@ -34,6 +36,7 @@ class AppRoutes {
     GetPage(name: profilescreen, page: () => ProfileScreen()),
     GetPage(name: contentCreateScreen, page: () => ContentCreateScreen()),
     GetPage(name: businessLocationScreen, page: () => BusinessLocationScreen()),
+    GetPage(name: productscreen, page: () => ProductDetailScreen()),
     GetPage(
       name: reelscreen,
       page: () {

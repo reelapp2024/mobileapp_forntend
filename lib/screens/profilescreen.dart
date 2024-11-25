@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:logical_dottech/app_route.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/constant/image_const.dart';
-import 'package:logical_dottech/screens/chat_screen.dart';
 import 'package:logical_dottech/screens/playlist_detail_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -29,6 +28,20 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.dispose();
   }
 
+  double _drawerPosition = -300.0; // Initial position (hidden)
+  bool _isDrawerOpen = false;
+
+  void _toggleDrawer() {
+    setState(() {
+      if (_isDrawerOpen) {
+        _drawerPosition = -300.0; // Close the drawer
+      } else {
+        _drawerPosition = 0.0; // Open the drawer
+      }
+      _isDrawerOpen = !_isDrawerOpen;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +53,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                   .none, // This allows the profile image to overflow outside the cover photo
               children: [
                 // Cover photo
+                Positioned(
+                  top: 16, // Adjust the distance from the top of the screen
+                  right:
+                      16, // Adjust the distance from the right edge of the screen
+                  child: Icon(
+                    Icons.share,
+                    color: Colors.white,
+                    size: 30, // You can adjust the size of the icon here
+                  ),
+                ),
                 Container(
                   height: 140, // Adjust height for cover photo
                   decoration: BoxDecoration(
@@ -48,6 +71,32 @@ class _ProfileScreenState extends State<ProfileScreen>
                           .coverphoto), // Replace with your background image
                       fit: BoxFit.cover,
                     ),
+                  ),
+                  child: Container(
+                    color: Colors.black
+                        .withOpacity(0.5), // Black overlay with opacity
+                  ),
+                ),
+                Positioned(
+                  top: 30, // Adjust the distance from the top of the screen
+                  right:
+                      6, // Adjust the distance from the right edge of the screen
+                  child: IconButton(
+                    icon: Icon(Icons.more_vert, color: Colors.white, size: 30),
+                    onPressed: () {
+                      // Handle 3 dots click (open menu or options)
+                    },
+                  ),
+                ),
+                Positioned(
+                  top: 30, // Adjust the distance from the top of the screen
+                  right:
+                      48, // Adjust the distance from the right edge of the screen (next to the three dots)
+                  child: IconButton(
+                    icon: Icon(Icons.share, color: Colors.white, size: 30),
+                    onPressed: () {
+                      // Handle share click (share functionality)
+                    },
                   ),
                 ),
                 // Profile photo
@@ -107,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Text(
                             'Brand Name',
                             style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '@brandnm',
@@ -115,51 +164,25 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                         ],
                       ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Text('244', style: TextStyle(fontSize: 16)),
-                                  Text('Posts', style: TextStyle(fontSize: 12)),
-                                ],
-                              ),
-                              SizedBox(width: 16),
-                              Column(
-                                children: [
-                                  Text('4,588', style: TextStyle(fontSize: 16)),
-                                  Text('Followers',
-                                      style: TextStyle(fontSize: 12)),
-                                ],
-                              ),
-                              SizedBox(width: 16),
-                              Column(
-                                children: [
-                                  Text('4.5', style: TextStyle(fontSize: 16)),
-                                  Text('Rating',
-                                      style: TextStyle(fontSize: 12)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                   Row(
                     children: [
-                      Text(
-                        'Latest Trendy Clothing\n'
-                        '👉 For Orders DM or WhatsApp 0000000000\n'
-                        '👉 Cash on Delivery available 👌\n'
-                        '👉 Both Retail & Wholesale\n'
-                        '👉 Ship Allover 🇮🇳',
-                        style: TextStyle(fontSize: 14),
+                      Expanded(
+                        child: Text(
+                          'Latest Trendy Clothing'
+                          ', For Orders DM or WhatsApp 0000000000'
+                          ', Cash on Delivery available 👌',
+                          // '👉 Both Retail & Wholesale\n'
+                          // '👉 Ship Allover 🇮🇳',
+                          style: TextStyle(
+                              fontSize: 14, fontFamily: 'Montserrat-Black'),
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  // SizedBox(height: 16),
+
                   GestureDetector(
                     onTap: () {
                       // Handle tap for location link
@@ -172,119 +195,95 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          height: 40,
-                          width: 150,
-                          decoration: BoxDecoration(
-                              color: AppColors.primary1Color,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              "Edit Profile",
-                              style: TextStyle(color: Colors.white),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment
+                              .spaceEvenly, // Center the columns
+                          children: [
+                            Column(
+                              children: [
+                                Text('4,5k', style: TextStyle(fontSize: 16)),
+                                Text('Followers',
+                                    style: TextStyle(fontSize: 12)),
+                              ],
                             ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          height: 40,
-                          width: 150,
-                          decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              "Share",
-                              style: TextStyle(color: Colors.white),
+                            Container(
+                              height: 30,
+                              width: 1.8,
+                              color: const Color.fromARGB(255, 173, 172, 172),
                             ),
-                          ),
+                            Column(
+                              children: [
+                                Text('4.5', style: TextStyle(fontSize: 16)),
+                                Text('Rating', style: TextStyle(fontSize: 12)),
+                              ],
+                            ),
+                            Container(
+                              height: 30,
+                              width: 1.8,
+                              color: const Color.fromARGB(255, 173, 172, 172),
+                            ),
+                            Column(
+                              children: [Icon(Icons.person), Text('Services')],
+                            ),
+                            Container(
+                              height: 30,
+                              width: 1.8,
+                              color: const Color.fromARGB(255, 173, 172, 172),
+                            ),
+                            Column(
+                              children: [
+                                Icon(Icons.location_city),
+                                Text('Area')
+                              ],
+                            )
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 10),
-                  Column(
-                    children: [
-                      Container(
-                        height: 100, // Height of the highlight section
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10 + 1, // Extra 1 for "Add Story" button
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 16.0),
-                                child: Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        // Handle Add Story tap
-                                        _addStory();
-                                      },
-                                      child: Container(
-                                        width: 70,
-                                        height: 70,
-                                        decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.black),
-                                          shape: BoxShape.circle,
-                                          color: Colors
-                                              .transparent, // Placeholder color
-                                        ),
-                                        child: Icon(
-                                          Icons
-                                              .add, // Plus icon to indicate adding a story
-                                          size: 30,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 6),
-                                    Text('Add Story',
-                                        style: TextStyle(fontSize: 12)),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 16.0),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 70,
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: Colors.grey.shade300,
-                                            width: 2),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://example.com/story-${index}.jpg'), // Replace with story highlight image
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 6),
-                                    Text('Story $index',
-                                        style: TextStyle(fontSize: 12)),
-                                  ],
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                  // SizedBox(height: 10),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     GestureDetector(
+                  //       onTap: () {},
+                  //       child: Container(
+                  //         height: 40,
+                  //         width: 150,
+                  //         decoration: BoxDecoration(
+                  //             color: AppColors.primary1Color,
+                  //             borderRadius: BorderRadius.circular(12)),
+                  //         child: Center(
+                  //           child: Text(
+                  //             "Edit Profile",
+                  //             style: TextStyle(color: Colors.white),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     GestureDetector(
+                  //       onTap: () {},
+                  //       child: Container(
+                  //         height: 40,
+                  //         width: 150,
+                  //         decoration: BoxDecoration(
+                  //             color: AppColors.primaryColor,
+                  //             borderRadius: BorderRadius.circular(12)),
+                  //         child: Center(
+                  //           child: Text(
+                  //             "Share",
+                  //             style: TextStyle(color: Colors.white),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 10),
                 ],
               ),
             ),

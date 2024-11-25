@@ -5,11 +5,11 @@ import 'package:http/http.dart'
 class ApiService {
   // Base URL for the API
   static const String _baseUrl =
-      'https://api.yourapp.com/v1'; // Update to your actual base URL
+      'http://nodejs.logicaldottech.com/api/v1'; // Update to your actual base URL
 
   // API Endpoints
   static const String loginEndpoint = '/auth/login';
-  static const String addUserEndpoint = '/users/add';
+  static const String addUserEndpoint = '/signup';
   static const String deleteUserEndpoint = '/users/delete';
 
   // Common headers (modify this based on your API needs)

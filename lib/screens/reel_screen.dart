@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async';
 
+// ignore: must_be_immutable
 class ReelScrollingScreen extends StatefulWidget {
   final String initialVideoUrl;
   final String username;

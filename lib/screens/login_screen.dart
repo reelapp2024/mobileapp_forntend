@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/constant/image_const.dart';
 

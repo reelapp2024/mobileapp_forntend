@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:logical_dottech/constant/color_const.dart';
 
 class CreateProfileScreen extends StatefulWidget {
   @override

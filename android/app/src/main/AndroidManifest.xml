@@ -9,6 +9,14 @@
         android:label="logical_dottech"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+    <meta-data
+        android:name="com.ola.maps.API_KEY"
+        android:value="Nhu8sLZbFBoVzwtURSkOX9fhN5ubMa8vVWo0kwfe" />
+
+
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
