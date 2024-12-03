@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:logical_dottech/app_route.dart';
-import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/constant/image_const.dart';
 import 'package:logical_dottech/screens/playlist_detail_screen.dart';
 
@@ -28,15 +26,15 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.dispose();
   }
 
-  double _drawerPosition = -300.0; // Initial position (hidden)
+// Initial position (hidden)
   bool _isDrawerOpen = false;
 
   void _toggleDrawer() {
     setState(() {
       if (_isDrawerOpen) {
-        _drawerPosition = -300.0; // Close the drawer
+// Close the drawer
       } else {
-        _drawerPosition = 0.0; // Open the drawer
+// Open the drawer
       }
       _isDrawerOpen = !_isDrawerOpen;
     });
@@ -195,56 +193,137 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment
-                              .spaceEvenly, // Center the columns
+                              .spaceBetween, // Center the columns
                           children: [
+                            // First Column (Followers)
                             Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text('4,5k', style: TextStyle(fontSize: 16)),
-                                Text('Followers',
-                                    style: TextStyle(fontSize: 12)),
+                                // Followers number inside the Container
+                                Container(
+                                  height: 50,
+                                  width: 70,
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .white, // White background for each column
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 5.0,
+                                        spreadRadius: 2.0,
+                                        offset: Offset(0, 2), // Shadow position
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(
+                                        8.0), // Optional: rounded corners
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '4,5k',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                    height: 8), // Space between number and text
+                                Text(
+                                  'Followers',
+                                  style: TextStyle(fontSize: 12),
+                                ),
                               ],
                             ),
+
+                            // Second Column (Rating)
                             Container(
-                              height: 30,
-                              width: 1.8,
-                              color: const Color.fromARGB(255, 173, 172, 172),
+                              padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .white, // White background for each column
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 2.0,
+                                    offset: Offset(0, 2), // Shadow position
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                    8.0), // Optional: rounded corners
+                              ),
+                              child: Column(
+                                children: [
+                                  Text('4.5', style: TextStyle(fontSize: 16)),
+                                  Text('Rating',
+                                      style: TextStyle(fontSize: 12)),
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: [
-                                Text('4.5', style: TextStyle(fontSize: 16)),
-                                Text('Rating', style: TextStyle(fontSize: 12)),
-                              ],
-                            ),
+
+                            // Third Column (Services)
                             Container(
-                              height: 30,
-                              width: 1.8,
-                              color: const Color.fromARGB(255, 173, 172, 172),
+                              padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .white, // White background for each column
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 2.0,
+                                    offset: Offset(0, 2), // Shadow position
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                    8.0), // Optional: rounded corners
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.person),
+                                  Text('Services')
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: [Icon(Icons.person), Text('Services')],
-                            ),
+
+                            // Fourth Column (Area)
                             Container(
-                              height: 30,
-                              width: 1.8,
-                              color: const Color.fromARGB(255, 173, 172, 172),
+                              padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .white, // White background for each column
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 2.0,
+                                    offset: Offset(0, 2), // Shadow position
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                    8.0), // Optional: rounded corners
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.location_city),
+                                  Text('Area'),
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: [
-                                Icon(Icons.location_city),
-                                Text('Area')
-                              ],
-                            )
                           ],
                         ),
                       ],
                     ),
-                  ),
+                  )
+
                   // SizedBox(height: 10),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

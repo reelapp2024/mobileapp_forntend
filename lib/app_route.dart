@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:logical_dottech/screens/Business_location.dart';
 import 'package:logical_dottech/screens/content_create.dart';
 import 'package:logical_dottech/screens/create_profile.dart';
+import 'package:logical_dottech/screens/get_location.dart';
 import 'package:logical_dottech/screens/get_otp_screen.dart';
 import 'package:logical_dottech/screens/login_screen.dart';
 import 'package:logical_dottech/screens/mainscreen.dart';
@@ -25,6 +26,7 @@ class AppRoutes {
   static const String contentCreateScreen = '/contentCreateScreen';
   static const String businessLocationScreen = '/businessLocationScreen';
   static const String productscreen = '/productscreen';
+  static const String getLocation = '/getLocation';
 
   static final routes = [
     GetPage(name: signup, page: () => SignupScreen()),
@@ -37,6 +39,7 @@ class AppRoutes {
     GetPage(name: contentCreateScreen, page: () => ContentCreateScreen()),
     GetPage(name: businessLocationScreen, page: () => BusinessLocationScreen()),
     GetPage(name: productscreen, page: () => ProductDetailScreen()),
+    GetPage(name: getLocation, page: () => GetLocation()),
     GetPage(
       name: reelscreen,
       page: () {

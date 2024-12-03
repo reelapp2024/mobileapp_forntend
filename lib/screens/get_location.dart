@@ -1,52 +1,50 @@
-// import 'package:flutter/material.dart';
-// // Import Ola Maps SDK (replace with the actual package)
-// import 'package:ola_maps/ola_maps.dart'; // Example package name
-// import 'package:ola_maps/models/lat_lng.dart'; // If Ola Maps has LatLng support
+import 'dart:async';
 
-// class OlaMapScreen extends StatefulWidget {
-//   @override
-//   _OlaMapScreenState createState() => _OlaMapScreenState();
-// }
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-// class _OlaMapScreenState extends State<OlaMapScreen> {
-//   OlaMapController? _mapController;
+class GetLocation extends StatefulWidget {
+  const GetLocation({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Ola Map"),
-//         centerTitle: true,
-//       ),
-//       body: OlaMapView(
-//         apiKey: "Nhu8sLZbFBoVzwtURSkOX9fhN5ubMa8vVWo0kwfe", // Replace with your API key
-//         initialPosition: LatLng(12.9716, 77.5946), // Replace with the initial latitude & longitude
-//         zoom: 12.0,
-//         onMapCreated: (controller) {
-//           setState(() {
-//             _mapController = controller;
-//           });
-//         },
-//         markers: {
-//           // Example marker
-//           Marker(
-//             position: LatLng(12.9716, 77.5946),
-//             title: "Bangalore",
-//             snippet: "This is a marker in Bangalore",
-//           ),
-//         },
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         child: Icon(Icons.location_searching),
-//         onPressed: () async {
-//           if (_mapController != null) {
-//             // Example: Center the map on a specific location
-//             await _mapController?.moveCamera(
-//               LatLng(13.0827, 80.2707), // New position (Chennai, for example)
-//             );
-//           }
-//         },
-//       ),
-//     );
-//   }
-// }
+  @override
+  State<GetLocation> createState() => GetLocationState();
+}
+
+class GetLocationState extends State<GetLocation> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  static const CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GoogleMap(
+        mapType: MapType.hybrid,
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _goToTheLake,
+        label: const Text('To the lake!'),
+        icon: const Icon(Icons.directions_boat),
+      ),
+    );
+  }
+
+  Future<void> _goToTheLake() async {
+    final GoogleMapController controller = await _controller.future;
+    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  }
+}
