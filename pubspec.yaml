@@ -47,6 +47,7 @@ dependencies:
   ola_map_flutter: ^0.0.7
   google_maps_flutter_android: ^2.14.11
   google_maps_flutter: ^2.10.0
+  geocoding: ^3.0.0
   
 
 dev_dependencies:
