@@ -1,115 +1,102 @@
-import 'dart:convert'; // For JSON encoding/decoding
-import 'package:http/http.dart'
-    as http; // HTTP client package for making API requests
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
-  // Base URL for the API
-  static const String _baseUrl =
-      'http://nodejs.logicaldottech.com/api/v1'; // Update to your actual base URL
+  static const String _baseUrl = 'http://nodejs.logicaldottech.com/api/v1';
 
-  // API Endpoints
-  static const String loginEndpoint = '/auth/login';
-  static const String addUserEndpoint = '/signup';
+  static const String loginEndpoint = '/login';
+  static const String signupEndpoint = '/signup';
   static const String deleteUserEndpoint = '/users/delete';
 
-  // Common headers (modify this based on your API needs)
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
+  // Common headers
   Map<String, String> get headers => {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       };
 
-  // If using token-based authentication, include a method to add authorization headers
-  Map<String, String> getAuthHeaders(String token) => {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
+  // Get token from secure storage
+  Future<String?> _getToken() async {
+    return await _secureStorage.read(key: 'auth_token');
+  }
 
-  // ==================== Login API ==================== //
+  // Save token to secure storage
+  Future<void> _saveToken(String token) async {
+    await _secureStorage.write(key: 'auth_token', value: token);
+  }
+
+  // Remove token from secure storage
+  Future<void> _removeToken() async {
+    await _secureStorage.delete(key: 'auth_token');
+  }
+
+  // Auth headers
+  Future<Map<String, String>> _getAuthHeaders() async {
+    final token = await _getToken();
+    if (token == null) throw Exception('Token not found. Please log in.');
+    return {
+      ...headers,
+      'Authorization': 'Bearer $token',
+    };
+  }
+
+  // Login API
   Future<Map<String, dynamic>> login(String email, String password) async {
     final url = Uri.parse('$_baseUrl$loginEndpoint');
+    final body = jsonEncode({'email': email, 'password': password});
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        if (data['token'] != null) {
+          await _saveToken(data['token']);
+        }
+        return data;
+      } else {
+        throw Exception(jsonDecode(response.body)['message']);
+      }
+    } catch (e) {
+      throw Exception('Login error: $e');
+    }
+  }
+
+  // Signup API
+  Future<Map<String, dynamic>> addUser({
+    required String username,
+    required String email,
+    required String phone,
+    required String password,
+    required String countryCode, // New parameter for country code
+  }) async {
+    final url = Uri.parse('$_baseUrl$signupEndpoint');
     final body = jsonEncode({
+      'username': username,
       'email': email,
+      'phone': phone,
       'password': password,
+      'country_code': countryCode, // Include country code in the payload
     });
 
     try {
       final response = await http.post(url, headers: headers, body: body);
 
-      // Check if the response status is successful
-      if (response.statusCode == 200) {
-        // Return the parsed response body
-        return jsonDecode(response.body);
-      } else {
-        // Handle error (like invalid credentials)
-        throw Exception('Failed to login: ${response.body}');
-      }
-    } catch (e) {
-      // Handle other errors (like network issues)
-      throw Exception('Login error: $e');
-    }
-  }
-
-  // ==================== Add User API ==================== //
-  Future<Map<String, dynamic>> addUser({
-    required String name,
-    required String email,
-    required String phoneNumber,
-    required String password,
-    required String token, // Assuming you'll use token for authentication
-  }) async {
-    final url = Uri.parse('$_baseUrl$addUserEndpoint');
-    final body = jsonEncode({
-      'name': name,
-      'email': email,
-      'phone_number': phoneNumber,
-      'password': password,
-    });
-
-    try {
-      final response = await http.post(
-        url,
-        headers: getAuthHeaders(token), // Include the token for authorization
-        body: body,
-      );
-
       if (response.statusCode == 201) {
-        // User created successfully
         return jsonDecode(response.body);
       } else {
-        // Handle error (like validation failure)
-        throw Exception('Failed to add user: ${response.body}');
+        throw Exception(jsonDecode(response.body)['message']);
       }
     } catch (e) {
-      throw Exception('Add user error: $e');
+      throw Exception('Signup error: $e');
     }
   }
 
-  // ==================== Delete User API ==================== //
-  Future<bool> deleteUser({
-    required String userId,
-    required String token,
-  }) async {
-    final url = Uri.parse('$_baseUrl$deleteUserEndpoint/$userId');
-
-    try {
-      final response = await http.delete(
-        url,
-        headers: getAuthHeaders(token), // Include the token for authorization
-      );
-
-      if (response.statusCode == 200) {
-        // User deleted successfully
-        return true;
-      } else {
-        // Handle error (like user not found)
-        throw Exception('Failed to delete user: ${response.body}');
-      }
-    } catch (e) {
-      throw Exception('Delete user error: $e');
-    }
+  // Logout API
+  Future<void> logout() async {
+    await _removeToken();
   }
-
-  // ==================== Helper Functions ==================== //
-  // You can add additional helper functions if needed, such as for refreshing tokens, etc.
 }

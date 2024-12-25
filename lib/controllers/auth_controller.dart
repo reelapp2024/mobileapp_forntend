@@ -1,109 +1,128 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../services/api_service.dart';
 
 class AuthController extends GetxController {
+  final ApiService apiService = ApiService();
+
   var email = ''.obs;
   var password = ''.obs;
   var phoneNumber = ''.obs;
+  var selectedBusinessType = ''.obs;
   var isLoading = false.obs; // Track loading state
   var errorMessage = ''.obs; // Track error messages
-
-  var selectedBusinessType = ''.obs;
+  var countryCode = ''.obs; // Observable variable for country code
 
   // Select business type
   void selectBusinessType(String type) {
     selectedBusinessType.value = type;
   }
 
-  // Login with email and password
-  void loginWithEmail() async {
-    if (email.value.isEmpty || password.value.isEmpty) {
-      errorMessage.value = 'Email and password cannot be empty';
-      return;
-    }
-
-    isLoading.value = true;
-    // Simulate login process with a 2-second delay
-    await Future.delayed(Duration(seconds: 2), () {
-      // Check for success or failure
-      if (email.value == "test@example.com" &&
-          password.value == "password123") {
-        // On success, navigate to another screen
-        isLoading.value = false;
-        Get.offNamed('/home'); // Navigate to the home screen
-      } else {
-        // Handle login error
-        isLoading.value = false;
-        errorMessage.value = 'Invalid email or password';
-        Get.snackbar('Login Failed', errorMessage.value);
-      }
-    });
-  }
-
-  // Sign up with email and password
-  void signup() async {
-    if (email.value.isEmpty ||
-        password.value.isEmpty ||
-        selectedBusinessType.value.isEmpty) {
-      errorMessage.value = 'All fields are required for signup';
-      return;
-    }
-
-    isLoading.value = true;
-    // Simulate signup process
-    await Future.delayed(Duration(seconds: 2), () {
-      // On success, navigate to the next step
-      isLoading.value = false;
-      Get.offNamed('/getOtp'); // Navigate to the OTP screen for verification
-    });
-  }
-
-  // Login with OTP
-  void loginWithOtp() {
-    if (phoneNumber.value.isEmpty) {
-      errorMessage.value = 'Please enter a valid phone number';
-      return;
-    }
-
-    // Simulate sending OTP
-    Get.snackbar('OTP Sent', 'An OTP has been sent to ${phoneNumber.value}');
-  }
-
-  // Logout functionality
-  void logout() {
-    // Simulate a logout process
-    isLoading.value = true;
-    Future.delayed(Duration(seconds: 1), () {
-      // After logout, redirect to the login screen
-      isLoading.value = false;
-      Get.offAllNamed('/login'); // Navigate to the login screen
-    });
-  }
-
-  // Generic login method that routes based on selected login type
-  void login() {
-    if (email.value.isNotEmpty && password.value.isNotEmpty) {
-      loginWithEmail(); // Login using email and password
-    } else if (phoneNumber.value.isNotEmpty) {
-      loginWithOtp(); // Login using phone number and OTP
-    } else {
-      errorMessage.value = 'Please provide valid credentials';
-      Get.snackbar('Login Error', errorMessage.value);
-    }
-  }
-
-  // Method to validate email format (basic example)
+  // Validate email format
   bool isValidEmail(String email) {
     String emailPattern = r'^[^@]+@[^@]+\.[^@]+';
-    RegExp regExp = RegExp(emailPattern);
-    return regExp.hasMatch(email);
+    return RegExp(emailPattern).hasMatch(email);
   }
 
-  // Reset the controller state
+  // Reset all fields
   void resetFields() {
     email.value = '';
     password.value = '';
     phoneNumber.value = '';
     selectedBusinessType.value = '';
     errorMessage.value = '';
+  }
+
+  // Login with email and password
+  Future<void> loginWithEmail() async {
+    if (email.isEmpty || password.isEmpty) {
+      errorMessage.value = 'Email and password are required.';
+      Get.snackbar('Login Error', errorMessage.value);
+      return;
+    }
+    if (!isValidEmail(email.value)) {
+      errorMessage.value = 'Please enter a valid email.';
+      Get.snackbar('Login Error', errorMessage.value);
+      return;
+    }
+
+    try {
+      isLoading.value = true;
+
+      final response = await apiService.login(email.value, password.value);
+      isLoading.value = false;
+
+      if (response.containsKey('token')) {
+        Get.snackbar('Success', 'Login successful');
+        Get.offAllNamed('/dashboard'); // Navigate to dashboard
+      } else {
+        errorMessage.value = 'Invalid email or password.';
+        Get.snackbar('Login Error', errorMessage.value);
+      }
+    } catch (e) {
+      isLoading.value = false;
+      errorMessage.value = e.toString();
+      Get.snackbar('Login Error', errorMessage.value);
+    }
+  }
+
+  // Signup method
+  Future<void> signup(String username) async {
+    if (email.isEmpty ||
+        password.isEmpty ||
+        phoneNumber.isEmpty ||
+        selectedBusinessType.isEmpty ||
+        countryCode.isEmpty) {
+      errorMessage.value =
+          'All fields, including country code, are required for signup.';
+      Get.snackbar('Signup Error', errorMessage.value);
+      return;
+    }
+
+    try {
+      isLoading.value = true;
+      final response = await apiService.addUser(
+        username: username,
+        email: email.value,
+        phone: phoneNumber.value,
+        password: password.value,
+        countryCode: countryCode.value, // Pass the country code here
+      );
+      isLoading.value = false;
+
+      Get.snackbar('Success', 'Signup successful. Verify your account.');
+      Get.offNamed('/getOtp'); // Navigate to OTP screen
+    } catch (e) {
+      isLoading.value = false;
+      errorMessage.value = e.toString();
+      Get.snackbar('Signup Error', errorMessage.value);
+    }
+  }
+
+  // Logout method
+  Future<void> logout() async {
+    isLoading.value = true;
+    await apiService.logout();
+    isLoading.value = false;
+
+    Get.offAllNamed('/login'); // Navigate to login screen
+    Get.snackbar('Success', 'Logged out successfully');
+  }
+
+  // Login with OTP
+  Future<void> loginWithOtp() async {
+    if (phoneNumber.isEmpty) {
+      errorMessage.value = 'Phone number is required.';
+      Get.snackbar('Login Error', errorMessage.value);
+      return;
+    }
+
+    try {
+      Get.snackbar('OTP Sent', 'An OTP has been sent to ${phoneNumber.value}');
+      Get.offNamed('/verifyOtp'); // Navigate to OTP verification screen
+    } catch (e) {
+      errorMessage.value = e.toString();
+      Get.snackbar('OTP Error', errorMessage.value);
+    }
   }
 }

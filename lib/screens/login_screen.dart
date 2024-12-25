@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logical_dottech/constant/color_const.dart';
 import 'package:logical_dottech/constant/image_const.dart';
-
 import '../controllers/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Prevent overflow when keyboard appears
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -36,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          // App Logo
                           Image.asset(
                             AppAssets.logo,
                             scale: 2.5,
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 20),
 
-                          // Email or Phone Number Field
+                          // Email Field
                           TextFormField(
                             cursorColor: AppColors.primaryColor,
                             onChanged: (value) =>
@@ -88,10 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          // Password Field with Eye Icon
+                          SizedBox(height: 20),
+
+                          // Password Field
                           TextFormField(
                             onChanged: (value) =>
                                 authController.password.value = value,
@@ -111,8 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    _isPasswordVisible =
-                                        !_isPasswordVisible; // Toggle password visibility
+                                    _isPasswordVisible = !_isPasswordVisible;
                                   });
                                 },
                               ),
@@ -124,14 +122,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                           ),
-
                           SizedBox(height: 20),
 
-                          // Login Button with validation
+                          // Login Button
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               if (_formKey.currentState!.validate()) {
-                                authController.login();
+                                authController.loginWithEmail();
                               }
                             },
                             child: Container(
@@ -152,14 +149,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-
                           SizedBox(height: 20),
 
-                          // Sign Up Text
+                          // Sign Up Navigation
                           RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
-                              text: 'Don’t have any account? ',
+                              text: 'Don’t have an account? ',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16.0,
@@ -173,15 +169,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Get.toNamed(
-                                          '/signup'); // Use named route to navigate
+                                      Get.toNamed('/signup');
                                     },
                                 ),
                               ],
                             ),
                           ),
-
-                          Spacer(), // This will push the content upwards when the keyboard is opened
+                          Spacer(),
                         ],
                       ),
                     ),

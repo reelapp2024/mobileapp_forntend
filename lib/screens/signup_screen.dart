@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'dart:math';
-
-import 'package:logical_dottech/constant/color_const.dart'; // Import for random OTP generation
+import 'package:logical_dottech/constant/color_const.dart'; // Import for colors
+import 'package:logical_dottech/services/api_service.dart'; // Import your API service
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -17,6 +16,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _isOtpButtonVisible = false;
+  String _selectedCountryCode = '+1'; // Default country code
 
   // Focus nodes for OTP fields
   final List<FocusNode> _otpFocusNodes = List.generate(4, (_) => FocusNode());
@@ -28,7 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    // Dispose controllers and focus nodes to free up resources
+    // Dispose controllers and focus nodes
     _usernameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
@@ -96,8 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     SizedBox(height: 10),
                     _buildTextField('Email', Icons.email, _emailController),
                     SizedBox(height: 10),
-                    _buildTextField(
-                        'Phone Number', Icons.phone, _phoneController),
+                    _buildPhoneInput(),
                     SizedBox(height: 10),
                     _buildTextField(
                         'Create Password', Icons.lock, _passwordController,
@@ -123,10 +122,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     // Register Button
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Navigate to the login screen
-                          Navigator.of(context).pushReplacementNamed('/login');
-                        },
+                        onPressed: _registerUser,
                         child: Text(
                           'Register',
                           style: TextStyle(color: Colors.white),
@@ -147,128 +143,162 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  // Method to get OTP
+  Widget _buildPhoneInput() {
+    return Row(
+      children: [
+        // Country code dropdown
+        DropdownButton<String>(
+          value: _selectedCountryCode,
+          items: ['+1', '+91', '+44', '+61', '+81']
+              .map((code) => DropdownMenuItem(
+                    value: code,
+                    child: Text(code),
+                  ))
+              .toList(),
+          onChanged: (value) {
+            setState(() {
+              _selectedCountryCode = value!;
+              _isOtpButtonVisible = _emailController.text.isNotEmpty &&
+                  _phoneController.text.isNotEmpty;
+            });
+          },
+        ),
+        SizedBox(width: 10),
+        // Phone number input
+        Expanded(
+          child: TextField(
+            controller: _phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              labelText: 'Phone Number',
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              setState(() {
+                _isOtpButtonVisible = _emailController.text.isNotEmpty &&
+                    _phoneController.text.isNotEmpty;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Method to handle OTP
   void _getOtp() {
     if (_emailController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
-      // Generate OTP and send it to both email and phone
-      _generatedOtp = _generateOtp(); // Generate the OTP
-      _sendOtpEmail(_emailController.text, _generatedOtp); // Send OTP to email
-      _sendOtpSms(_phoneController.text, _generatedOtp); // Send OTP to phone
+      _generatedOtp = _generateOtp(); // Generate OTP
+      _sendOtpEmail(_emailController.text, _generatedOtp); // Mock sending OTP
+      _sendOtpSms(_phoneController.text, _generatedOtp); // Mock sending OTP
 
-      // Show OTP dialog after sending OTP
-      _showOtpDialog();
+      _showOtpDialog(); // Show OTP dialog
     } else {
       _showError('Please enter both email and phone number.');
     }
   }
 
-  // Method to generate a random OTP
-  String _generateOtp() {
-    final random = Random();
-    int otp = 100000 + random.nextInt(900000); // Generate a 6-digit OTP
-    return otp.toString();
+  // Method to register user
+  Future<void> _registerUser() async {
+    if (_usernameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _phoneController.text.isEmpty ||
+        _passwordController.text.isEmpty) {
+      _showError('All fields are required.');
+      return;
+    }
+
+    try {
+      // Call the API to register user
+      final apiService = ApiService(); // Create an instance of ApiService
+      final response = await apiService.addUser(
+        username: _usernameController.text,
+        email: _emailController.text,
+        phone: _phoneController.text,
+        countryCode: _selectedCountryCode, // Pass the selected country code
+        password: _passwordController.text,
+      );
+
+      if (response['success']) {
+        _showSuccess('Registration successful!');
+        Get.toNamed('/login'); // Navigate to login screen
+      } else {
+        _showError(response['message'] ?? 'Registration failed.');
+      }
+    } catch (e) {
+      _showError('Error: $e');
+    }
   }
 
-  // Method to send OTP via email (mockup)
-  void _sendOtpEmail(String email, String otp) {
-    // Implement your email sending logic here (e.g., using an API)
-    print('Sending OTP $otp to email: $email');
-  }
-
-  // Method to send OTP via SMS (mockup)
-  void _sendOtpSms(String phone, String otp) {
-    // Implement your SMS sending logic here (e.g., using an API)
-    print('Sending OTP $otp to phone: $phone');
-  }
-
-  // Method to show error messages
+  // Show error snackbar
   void _showError(String message) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  // Method to show OTP dialog
+  // Show success snackbar
+  void _showSuccess(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  // Generate OTP
+  String _generateOtp() {
+    final random = Random();
+    return (100000 + random.nextInt(900000)).toString();
+  }
+
+  // Mock OTP email sending
+  void _sendOtpEmail(String email, String otp) {
+    print('Sending OTP $otp to email: $email');
+  }
+
+  // Mock OTP SMS sending
+  void _sendOtpSms(String phone, String otp) {
+    print('Sending OTP $otp to phone: $phone');
+  }
+
+  // Show OTP dialog
   void _showOtpDialog() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.white,
-          content: Container(
-            width: 300,
-            height: 400,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/OTP 1.png',
-                  height: 100,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Enter the OTP sent to your phone',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: List.generate(4, (index) {
-                    return _otpTextField(index);
-                  }),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // _openOlaMap(); // Open Ola Map on submit
-                    Get.toNamed('/selectBustype');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary1Color,
-                  ),
-                  child: Text('Submit', style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Enter OTP sent to your phone'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(4, _otpTextField),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close dialog
+                },
+                child: Text('Submit'),
+              ),
+            ],
           ),
         );
       },
-    ).then((_) {
-      _otpFocusNodes.forEach((node) => node.unfocus());
-    });
+    );
   }
 
+  // OTP text field builder
   Widget _otpTextField(int index) {
-    return Container(
+    return SizedBox(
       width: 50,
       child: TextField(
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        focusNode: _otpFocusNodes[index],
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          hintText: '*',
-        ),
-        maxLength: 1, // Limit to 1 character
+        maxLength: 1,
+        decoration: InputDecoration(border: OutlineInputBorder()),
         onChanged: (value) {
-          if (value.length == 1) {
-            // Move focus to the next field if a digit is entered
-            if (index < 3) {
-              _otpFocusNodes[index + 1]
-                  .requestFocus(); // Move focus to the next field
-            } else {
-              // If it's the last field, you might want to handle submission or focus out
-              FocusScope.of(context)
-                  .unfocus(); // Unfocus if it's the last field
-            }
-          } else if (value.isEmpty && index > 0) {
-            // Move focus back to the previous field if deleted
+          if (value.isNotEmpty) {
+            if (index < 3) _otpFocusNodes[index + 1].requestFocus();
+          } else if (index > 0) {
             _otpFocusNodes[index - 1].requestFocus();
           }
         },
@@ -276,20 +306,17 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  // A reusable method for building TextFields
+  // Text field builder
   Widget _buildTextField(
-      String labelText, IconData icon, TextEditingController controller,
+      String label, IconData icon, TextEditingController controller,
       {bool isObscure = false}) {
     return TextField(
       controller: controller,
       obscureText: isObscure,
       decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: Icon(icon, color: Colors.grey),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey),
-        ),
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(),
       ),
       onChanged: (value) {
         setState(() {
