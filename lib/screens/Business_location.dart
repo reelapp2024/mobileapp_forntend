@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart'; // Add geolocator package to pubspec.yaml
 import 'package:http/http.dart'
     as http; // Add http package to send data to your API
+import 'get_location.dart'; // Import GetLocation screen
 
 class BusinessLocationScreen extends StatefulWidget {
   @override
@@ -44,11 +45,6 @@ class _BusinessLocationScreenState extends State<BusinessLocationScreen> {
     }
 
     _currentPosition = await Geolocator.getCurrentPosition();
-    // TODO: Use the latitude and longitude to fetch City, State, and Pincode
-    // For example, call Google Places API here to retrieve and populate fields
-    // _cityController.text = fetchedCity;
-    // _stateController.text = fetchedState;
-    // _pincodeController.text = fetchedPincode;
   }
 
   Future<void> _submitForm() async {
@@ -69,12 +65,27 @@ class _BusinessLocationScreenState extends State<BusinessLocationScreen> {
       );
 
       if (response.statusCode == 200) {
-        // Successfully sent data
         print('Data submitted successfully');
       } else {
-        // Handle the error
         print('Failed to submit data');
       }
+    }
+  }
+
+  Future<void> _openMapScreen() async {
+    final Map<String, String>? selectedLocation = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GetLocation(),
+      ),
+    );
+
+    if (selectedLocation != null) {
+      setState(() {
+        _cityController.text = selectedLocation['city'] ?? '';
+        _stateController.text = selectedLocation['state'] ?? '';
+        _pincodeController.text = selectedLocation['pincode'] ?? '';
+      });
     }
   }
 
@@ -101,7 +112,6 @@ class _BusinessLocationScreenState extends State<BusinessLocationScreen> {
             ),
           ),
         ),
-        // Title "Sign Up"
         Positioned(
           top: 60,
           left: 16,
@@ -166,6 +176,18 @@ class _BusinessLocationScreenState extends State<BusinessLocationScreen> {
                               }
                               return null;
                             },
+                          ),
+                          SizedBox(height: 16),
+                          GestureDetector(
+                            onTap: _openMapScreen,
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: "Select Location",
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
                           ),
                           SizedBox(height: 16),
                           TextFormField(

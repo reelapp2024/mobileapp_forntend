@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:logical_dottech/screens/Business_location.dart';
+import 'package:logical_dottech/screens/busines_singUp.dart';
+import 'package:logical_dottech/screens/business_verfication.dart';
+import 'package:logical_dottech/screens/busunderreview.dart';
 import 'package:logical_dottech/screens/content_create.dart';
 import 'package:logical_dottech/screens/create_profile.dart';
 import 'package:logical_dottech/screens/get_location.dart';
@@ -12,6 +15,7 @@ import 'package:logical_dottech/screens/reel_screen.dart';
 import 'package:logical_dottech/screens/selectBusinesType.dart';
 import 'package:logical_dottech/screens/signup_screen.dart';
 import 'package:logical_dottech/screens/splash_screen.dart';
+import 'package:logical_dottech/screens/verfieddoc.dart';
 
 class AppRoutes {
   static const String login = '/login';
@@ -27,6 +31,11 @@ class AppRoutes {
   static const String businessLocationScreen = '/businessLocationScreen';
   static const String productscreen = '/productscreen';
   static const String getLocation = '/getLocation';
+  static const String businesssingup = '/businesssingup';
+  static const String businessVerifyDocumentScreen =
+      '/businessVerifyDocumentScreen';
+  static const String businessVerifiedScreen = '/businessVerifiedScreen';
+  static const String businessUnderReviewScreen = '/businessUnderReviewScreen';
 
   static final routes = [
     GetPage(name: signup, page: () => SignupScreen()),
@@ -40,6 +49,14 @@ class AppRoutes {
     GetPage(name: businessLocationScreen, page: () => BusinessLocationScreen()),
     GetPage(name: productscreen, page: () => ProductDetailScreen()),
     GetPage(name: getLocation, page: () => GetLocation()),
+    GetPage(name: businessVerifiedScreen, page: () => BusinessVerifiedScreen()),
+    GetPage(
+        name: businessUnderReviewScreen,
+        page: () => BusinessUnderReviewScreen()),
+    GetPage(name: businesssingup, page: () => BusinessSignUpScreen()),
+    GetPage(
+        name: businessVerifyDocumentScreen,
+        page: () => BusinessVerifyDocumentScreen()),
     GetPage(
       name: reelscreen,
       page: () {
